@@ -2,16 +2,24 @@
 
 {% block content %}
 <h1>{{ product.name }}</h1>
+
+<!-- Display the main product image -->
 <div>
-    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 400px;"/>
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 400px;" />
 </div>
+
 <p>{{ product.description }}</p>
 <p>${{ product.price }}</p>
 <div>
     <h3>More Pictures:</h3>
-    {% for image in product.additional_images.all %}
-        <img src="{{ image.url }}" alt="{{ product.name }}" style="max-width: 150px; margin: 5px;">
-    {% endfor %}
+    {% if product.additional_images.exists %}
+        {% for image in product.additional_images.all %}
+            <img src="{{ image.image.url }}" alt="Additional Image of {{ product.name }}" style="max-width: 150px; margin: 5px;">
+        {% endfor %}
+    {% else %}
+        <p>No additional images available.</p>
+    {% endif %}
 </div>
+
 <p><a href="{% url 'add_to_cart' product.id %}">Add to Cart</a></p>
 {% endblock %}
