@@ -6,6 +6,8 @@ import stripe
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from .forms import ShippingForm
+import json
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -118,7 +120,7 @@ def login_view(request):
 @login_required
 def checkout(request):
     try:
-        # Get the user's cart
+        # Get the user's cart and items
         cart = Cart.objects.get(user=request.user)
         cart_items = CartItem.objects.filter(cart=cart)
         total = sum(item.product.price * item.quantity for item in cart_items)
@@ -127,7 +129,35 @@ def checkout(request):
             messages.error(request, "Your cart is empty.")
             return redirect("cart_view")
 
-        return render(request, "store/checkout.html", {"total": total})
+        # Create an order only when the user clicks 'Continue to Payment'
+        if request.method == "POST":
+            # Create order entries for each cart item
+            orders = []
+            for item in cart_items:
+                order = Order.objects.create(
+                    user=request.user,
+                    product=item.product,
+                    quantity=item.quantity,
+                    total_price=item.product.price * item.quantity,
+                    name=request.POST["name"],  # Assuming form input fields
+                    email=request.POST["email"],
+                    phone_number=request.POST["phone_number"],
+                    shipping_address=request.POST["shipping_address"],
+                )
+                orders.append(order)
+
+            # Now that the orders are created, send the session data to Stripe
+            return redirect("payment_page")
+
+        else:
+            form = ShippingForm()
+
+        # Render the checkout page
+        return render(
+            request,
+            "store/checkout.html",
+            {"total": total, "cart_items": cart_items, "form": form},
+        )
 
     except Cart.DoesNotExist:
         messages.error(request, "No cart found. Please add items to your cart.")
@@ -137,29 +167,40 @@ def checkout(request):
 @login_required
 @csrf_exempt
 def create_checkout_session(request):
-    # Assuming the user is logged in and their cart is associated with them
-    cart_items = CartItem.objects.filter(cart__user=request.user)
-
-    # Prepare the line items for the checkout session
-    line_items = []
-    for item in cart_items:
-        line_items.append(
-            {
-                "price_data": {
-                    "currency": "usd",  # Modify to your preferred currency
-                    "product_data": {
-                        "name": item.product.name,
-                    },
-                    "unit_amount": int(
-                        item.product.price * 100
-                    ),  # Stripe expects the amount in cents
-                },
-                "quantity": item.quantity,
-            }
-        )
-
     try:
-        # Create a Stripe Checkout session
+        # Parse incoming request data
+        data = json.loads(request.body)
+        order_id = data.get("order_id")  # Optional, but can be useful
+
+        # Fetch the cart items for the current user (do not delete the cart here!)
+        cart_items = CartItem.objects.filter(cart__user=request.user)
+
+        # Ensure that there are items in the cart before proceeding
+        if not cart_items:
+            return JsonResponse({"error": "No items in the cart"}, status=400)
+
+        # Initialize line items list
+        line_items = []
+
+        # Populate the line items from the cart items
+        for item in cart_items:
+            line_items.append(
+                {
+                    "price_data": {
+                        "currency": "usd",  # Use your preferred currency
+                        "product_data": {
+                            "name": item.product.name,  # Product name
+                        },
+                        "unit_amount": int(item.product.price * 100),  # Price in cents
+                    },
+                    "quantity": item.quantity,  # Quantity from the cart item
+                }
+            )
+
+        # Debugging line items to verify the data
+        print(line_items)
+
+        # Create the Stripe checkout session
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=line_items,
@@ -167,7 +208,10 @@ def create_checkout_session(request):
             success_url=request.build_absolute_uri("/success/"),
             cancel_url=request.build_absolute_uri("/cancel/"),
         )
+
+        # Return the session ID to the frontend
         return JsonResponse({"sessionId": session.id})
+
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
@@ -179,3 +223,8 @@ def order_history(request):
 
 def cancel(request):
     return render(request, "cancel.html")
+
+
+def payment_page(request):
+    # Render the payment page
+    return render(request, "store/payment_page.html")

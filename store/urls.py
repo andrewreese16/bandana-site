@@ -36,5 +36,6 @@ urlpatterns = [
         ),
         name="signup",
     ),
+    path("payment/", views.payment_page, name="payment_page"),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

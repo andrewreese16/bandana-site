@@ -25,8 +25,6 @@ env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
-print(env('STRIPE_SECRET_KEY'))  # Should print your secret key
-
 
 STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
 STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
@@ -136,7 +134,7 @@ STATIC_URL = "static/"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # This assumes your 'static' folder is at the same level as 'manage.py'
+    os.path.join(BASE_DIR, 'store', 'static'),  # Path to the 'static' folder inside the 'store' directory
 ]
 
 LOGIN_REDIRECT_URL = 'product_list'  # Where to redirect after login

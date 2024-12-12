@@ -1,7 +1,6 @@
-
 .signup-container {
   max-width: 400px;
-  margin: 50px auto; /* Centered with spacing from top */
+  margin: 50px auto;
   padding: 20px;
   background-color: #fff;
   border-radius: 8px;
@@ -10,14 +9,12 @@
   font-family: Arial, sans-serif;
 }
 
-/* Headings */
 .signup-container h2 {
   font-size: 2rem;
   margin-bottom: 20px;
   color: #333;
 }
 
-/* Form Styling */
 .signup-container form {
   display: flex;
   flex-direction: column;
@@ -42,7 +39,6 @@
   box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
 }
 
-/* Submit Button */
 .signup-container form button {
   background-color: #007bff;
   color: #fff;
@@ -56,7 +52,6 @@
   background-color: #0056b3;
 }
 
-/* Links */
 .signup-container p {
   margin-top: 15px;
   font-size: 0.9rem;
@@ -72,7 +67,6 @@
   text-decoration: underline;
 }
 
-/* Error Message Styling */
 .signup-container .error {
   background-color: #fef2f2;
   border: 1px solid #fca5a5;

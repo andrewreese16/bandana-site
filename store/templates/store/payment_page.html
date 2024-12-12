@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Complete Your Payment</h1>
+<p>Total: ${{ total }}</p>
+<button id="checkout-button" type="button">Pay with Card</button>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  var stripe = Stripe(
+    "pk_live_51QUKbF2N9dX1h0C5R0EI8hDMrBVkUre5P3fJXcH6GmOviZDBDLjpQliN0bvsoTainNjB4dY240aVyDTWs2WwF14T006I6Qa12M" // Stripe Publishable Key
+  );
+
+  var checkoutButton = document.getElementById("checkout-button");
+
+  checkoutButton.addEventListener("click", function () {
+    // Create the checkout session on the server side
+    fetch("/create-checkout-session/", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        // If you need to pass an order ID, do it here
+        // Ensure order_id is available in the backend context
+        order_id: "{{ order.id }}",  // Only pass if you have an order object
+      })
+    })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {  // Use data directly to get sessionId
+      if (data.sessionId) {
+        // Redirect to Stripe checkout with sessionId
+        return stripe.redirectToCheckout({ sessionId: data.sessionId });
+      } else {
+        alert("Error: " + data.error);  // Handle errors from the backend
+      }
+    })
+    .then(function (result) {
+      if (result.error) {
+        alert(result.error.message);  // Handle Stripe Checkout errors
+      }
+    })
+    .catch(function (error) {
+      console.error("Error:", error);  // Log any unexpected errors
+    });
+  });
+</script>
+
+{% endblock content %}

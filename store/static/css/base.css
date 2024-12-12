@@ -4,12 +4,18 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f8f8f8;
   color: #333;
   line-height: 1.6;
   padding-top: 60px;
+  display: flex;
+  flex-direction: column;
 }
 
 header {
@@ -49,6 +55,7 @@ header nav ul li a {
 }
 
 main {
+  flex-grow: 1;
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px;
@@ -70,10 +77,8 @@ footer {
   color: #ecf0f1;
   text-align: center;
   padding: 15px;
-  position: relative;
-  bottom: 0;
   width: 100%;
-  margin-top: 40px;
+  margin-top: auto;
 }
 
 #cart-count {
