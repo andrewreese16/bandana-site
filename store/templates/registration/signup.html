@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock head %}
+  
+
+{% block content %}
+<div class="signup-container">
+  <h2>Create an Account</h2>
+  <form method="post">
+      {% csrf_token %}
+      {% if form.errors %}
+      <div class="error">
+          {% for field in form %}
+              {% for error in field.errors %}
+                  <p>{{ error }}</p>
+              {% endfor %}
+          {% endfor %}
+      </div>
+      {% endif %}
+      <label for="{{ form.username.id_for_label }}">Username</label>
+      {{ form.username }}
+      <label for="{{ form.password1.id_for_label }}">Password</label>
+      <p>Password must be at least 8 characters long and not entirely numbers.</p>
+      {{ form.password1 }}
+      <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+      {{ form.password2 }}
+      <button type="submit">Sign Up</button>
+  </form>
+  <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+</div>
+{% endblock content %}
+  
