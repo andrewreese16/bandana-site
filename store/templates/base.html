@@ -14,7 +14,6 @@
             <ul>
                 <li><a href="{% url 'product_list' %}">Home</a></li>
                 <li><a href="{% url 'cart_view' %}">Cart (<span id="cart-count">{{ cart_item_count }}</span>)</a></li>
-                <li><a href="{% url 'checkout' %}">Checkout</a></li>
                 
                 {% if user.is_authenticated %}
                 <li>

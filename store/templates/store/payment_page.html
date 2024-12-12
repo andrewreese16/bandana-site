@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
+{% load static %}
 
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/payment.css' %}">
+{% endblock head %}
+  
 {% block content %}
-<h1>Complete Your Payment</h1>
-<p>Total: ${{ total }}</p>
-<button id="checkout-button" type="button">Pay with Card</button>
+<div class="payment-container">
+    <h1>Complete Your Payment</h1>
+
+    <button id="checkout-button" type="button">Pay with Card</button>
+</div>
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
@@ -21,9 +28,7 @@
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        // If you need to pass an order ID, do it here
-        // Ensure order_id is available in the backend context
-        order_id: "{{ order.id }}",  // Only pass if you have an order object
+        order_id: "{{ order.id }}", 
       })
     })
     .then(function (response) {

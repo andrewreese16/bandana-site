@@ -1,12 +1,36 @@
 {% extends 'base.html' %}
+{% load static %}
 
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+{% endblock head %}
+    
 {% block content %}
-<h1>Checkout</h1>
-<p>Total: ${{ total }}</p>
+<div class="checkout-container">
+    <h1>Checkout</h1>
+    <div class="checkout-summary">
+        <p><strong>Total:</strong> ${{ total }}</p>
+    </div>
 
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Continue to Payment</button>
-</form>
-
+    <form method="post" class="checkout-form">
+        {% csrf_token %}
+        <div class="form-fields">
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error-message">
+                            {% for error in field.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Continue to Payment</button>
+    </form>
+</div>
 {% endblock content %}

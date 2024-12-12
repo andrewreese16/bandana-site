@@ -37,5 +37,10 @@ urlpatterns = [
         name="signup",
     ),
     path("payment/", views.payment_page, name="payment_page"),
+    path(
+        "update-cart-item/<int:product_id>/",
+        views.update_cart_item_quantity,
+        name="update_cart_item_quantity",
+    ),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

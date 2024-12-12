@@ -74,9 +74,8 @@ def add_to_cart(request, product_id):
             request, "Please log in or create an account to add items to your cart."
         )
         # Redirect to login page
-        return redirect("login")  # Replace 'login' with your actual login URL name
+        return redirect("login")
 
-    # Rest of the existing add_to_cart logic remains the same
     product = get_object_or_404(Product, id=product_id)
 
     # Get the user's cart, or create one if it doesn't exist
@@ -101,6 +100,49 @@ def add_to_cart(request, product_id):
         cart_item.quantity = 1
         cart_item.save()
         messages.success(request, f"{product.name} added to your cart.")
+
+    return redirect("cart_view")
+
+
+def update_cart_item_quantity(request, product_id):
+    # Check if the user is authenticated
+    if not request.user.is_authenticated:
+        request.session["intended_product_id"] = product_id
+        messages.warning(
+            request, "Please log in or create an account to update your cart."
+        )
+        return redirect("login")
+
+    product = get_object_or_404(Product, id=product_id)
+    cart, created = Cart.objects.get_or_create(user=request.user)
+
+    # Ensure quantity is a valid positive number
+    try:
+        quantity = int(request.POST.get("quantity", 1))  # Get quantity from POST data
+    except ValueError:
+        messages.warning(request, "Invalid quantity.")
+        return redirect("cart_view")
+
+    # Check if the cart item exists
+    cart_item = CartItem.objects.filter(cart=cart, product=product).first()
+
+    if cart_item:
+        if quantity > 0 and quantity <= product.stock:
+            cart_item.quantity = quantity
+            cart_item.save()
+            messages.success(
+                request, f"Quantity of {product.name} updated to {quantity}."
+            )
+        elif quantity == 0:
+            cart_item.delete()
+            messages.success(request, f"{product.name} removed from your cart.")
+        else:
+            messages.warning(
+                request,
+                f"Sorry, only {product.stock} of {product.name} are available in stock.",
+            )
+    else:
+        messages.warning(request, f"{product.name} is not in your cart.")
 
     return redirect("cart_view")
 

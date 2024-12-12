@@ -72,6 +72,16 @@ a.remove-button {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+a.back-button {
+  background-color: #27ae60;
+  color: white;
+  padding: 8px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
 a.remove-button:hover {
   background-color: #c0392b;
   transform: scale(1.05);
