@@ -42,5 +42,6 @@ urlpatterns = [
         views.update_cart_item_quantity,
         name="update_cart_item_quantity",
     ),
+    path("product/<int:product_id>/", views.product_detail, name="product_detail"),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

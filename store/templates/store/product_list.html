@@ -6,12 +6,11 @@
     <ul>
     {% for product in products %}
         <li>
-            <h2>{{ product.name }}</h2>
-            <!-- Display product image -->
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 200px;"/>
-            <p>{{ product.description }}</p>
+            <a href="{% url 'product_detail' product.id %}">
+                <h2>{{ product.name }}</h2>
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 200px;"/>
+            </a>
             <p>${{ product.price }}</p>
-            <p><a href="{% url 'add_to_cart' product.id %}">Add to Cart</a></p>
         </li>
     {% endfor %}
     </ul>
