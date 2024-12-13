@@ -1,4 +1,3 @@
-/* General container styling */
 .product-detail-container {
   max-width: 800px;
   margin: 0 auto;
@@ -7,7 +6,6 @@
   color: #333;
 }
 
-/* Title styling */
 .product-title {
   font-size: 2rem;
   margin-bottom: 20px;
@@ -15,7 +13,6 @@
   color: #444;
 }
 
-/* Main image styling */
 .product-main-image img {
   width: 100%;
   max-width: 400px;
@@ -25,7 +22,6 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Product info */
 .product-info {
   margin-top: 20px;
   text-align: center;
@@ -40,10 +36,9 @@
 .product-price {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #007BFF;
+  color: #007bff;
 }
 
-/* Additional images */
 .product-gallery {
   margin-top: 30px;
 }
@@ -67,7 +62,6 @@
   color: #999;
 }
 
-/* Action buttons */
 .product-actions {
   margin-top: 30px;
   text-align: center;
@@ -80,7 +74,7 @@
   font-weight: bold;
   text-decoration: none;
   color: #fff;
-  background-color: #007BFF;
+  background-color: #007bff;
   border-radius: 5px;
   margin: 0 10px;
   transition: background-color 0.3s ease;
