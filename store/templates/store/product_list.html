@@ -1,20 +1,26 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/product.css' %}">
+{% endblock head %}
+    
 {% block content %}
-<h1>Bandanas</h1>
-{% if products %}
-    <ul>
-    {% for product in products %}
-        <li>
-            <a href="{% url 'product_detail' product.id %}">
-                <h2>{{ product.name }}</h2>
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 200px;"/>
-            </a>
-            <p>${{ product.price }}</p>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No products available at the moment.</p>
-{% endif %}
+<div class="product-container">
+    <h1>Bandanas</h1>
+    {% if products %}
+        <ul class="product-list">
+        {% for product in products %}
+            <li class="product-item">
+                <a href="{% url 'product_detail' product.id %}" class="product-link">
+                    <h2 class="product-name">{{ product.name }}</h2>
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image"/>
+                </a>
+                <p class="product-price">${{ product.price }}</p>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-products">No products available at the moment.</p>
+    {% endif %}
+</div>
 {% endblock %}

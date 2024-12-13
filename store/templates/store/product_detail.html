@@ -1,25 +1,42 @@
 {% extends 'base.html' %}
+{% load static %}
 
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+{% endblock head %}
+    
 {% block content %}
-<h1>{{ product.name }}</h1>
+<div class="product-detail-container">
+    <h1 class="product-title">{{ product.name }}</h1>
 
-<!-- Display the main product image -->
-<div>
-    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 400px;" />
+    <!-- Display the main product image -->
+    <div class="product-main-image">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+    </div>
+
+    <div class="product-info">
+        <p class="product-description">{{ product.description }}</p>
+        <p class="product-price">${{ product.price }}</p>
+    </div>
+
+    <!-- Additional images section -->
+    <div class="product-gallery">
+        <h3>More Pictures:</h3>
+        {% if product.additional_images.exists %}
+            <div class="gallery-images">
+                {% for image in product.additional_images.all %}
+                    <img src="{{ image.image.url }}" alt="Additional Image of {{ product.name }}" />
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-additional-images">No additional images available.</p>
+        {% endif %}
+    </div>
+
+    <!-- Action links -->
+    <div class="product-actions">
+        <a href="{% url 'add_to_cart' product.id %}" class="button">Add to Cart</a>
+        <a href="{% url 'product_list' %}" class="button secondary">Back</a>
+    </div>
 </div>
-
-<p>{{ product.description }}</p>
-<p>${{ product.price }}</p>
-<div>
-    <h3>More Pictures:</h3>
-    {% if product.additional_images.exists %}
-        {% for image in product.additional_images.all %}
-            <img src="{{ image.image.url }}" alt="Additional Image of {{ product.name }}" style="max-width: 150px; margin: 5px;">
-        {% endfor %}
-    {% else %}
-        <p>No additional images available.</p>
-    {% endif %}
-</div>
-
-<p><a href="{% url 'add_to_cart' product.id %}">Add to Cart</a></p>
 {% endblock %}

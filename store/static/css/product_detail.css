@@ -1,0 +1,99 @@
+/* General container styling */
+.product-detail-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+/* Title styling */
+.product-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #444;
+}
+
+/* Main image styling */
+.product-main-image img {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  display: block;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Product info */
+.product-info {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.product-description {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.product-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007BFF;
+}
+
+/* Additional images */
+.product-gallery {
+  margin-top: 30px;
+}
+
+.gallery-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.gallery-images img {
+  width: 150px;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.no-additional-images {
+  text-align: center;
+  color: #999;
+}
+
+/* Action buttons */
+.product-actions {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #fff;
+  background-color: #007BFF;
+  border-radius: 5px;
+  margin: 0 10px;
+  transition: background-color 0.3s ease;
+}
+
+.button.secondary {
+  background-color: #6c757d;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.button.secondary:hover {
+  background-color: #5a6268;
+}
